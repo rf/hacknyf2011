@@ -1,4 +1,4 @@
 HackNY: Fall 2011
 =================
 
-project
+Git hub action. This is used to track our code, yeah...
