@@ -64,24 +64,33 @@ app.post("/date_engine",  function (request, response) {
   console.log("zip code is..." + zip_code);
   var price = "2";
   hp.findLocations( zip_code, price, "food", function (food_arr){
-     var food_place = food_arr;
-      hp.findLocations( zip_code, price, "food", function (hotel_arr){
-         var hotel_place = hotel_arr; 
+     var food_place = food_arr[0];
+      hp.findLocations( zip_code, price, "hotels", function (hotel_arr){
+         var hotel_place = hotel_arr[0]; 
 
          hp.findLocations( zip_code, price, "entertainment", function (frolic_arr){
-            var frolic_place = frolic_arr; 
+            var frolic_place = frolic_arr[0]; 
             etsy.findGifts( "25", "1", function (error, data){
-               console.log(data);
+               console.log(hotel_place);
+               console.log(food_place);
                var gift = data[0];
                gift['name'] = gift['name'].replace("/<.*?>/","");
                gift['name'] = gift['name'].replace("/&/","");
                gift['description'] = gift['description'].replace("/&/","");
                var output = "<message><content>\n";
                   output += "Your Date Intinerary:<br/>\n";
+
+
                   output += "<anchor><message><content>" + gift['name'] + "-- $" + gift['price'] + "<br/>" + gift['description']+ " </content></message></anchor>Gift: " + gift['name'] + " -- $" + gift['price'] + "<br/>\n";
 
+
+                  output += "<anchor><message><content>" + frolic_place['name'] + "<br/>" + frolic_place['address']+ " </content></message></anchor>Activity: " + frolic_place['name'] +  "<br/>\n";
+
+                  output += "<anchor><message><content>" + food_place['name'] + "<br/>" + food_place['address'] + " </content></message></anchor>Food: " + food_place['name'] +"<br/>\n";
+                  
+                  output += "<anchor><message><content>" + hotel_place['name'] +  "<br/>" + food_place['address']+ " </content></message></anchor>Accommodations: " + food_place['name']+ "<br/>\n";
+
                output += "</content></message>\n";    
-               console.log("We should be sending out response....");
                response.send(output);
             });
          });
@@ -106,5 +115,5 @@ app.get("/etsy/:max_price/:num_to_return", function (req,res){
    );
 });
 
-app.listen(3222);
+app.listen(3011);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
