@@ -18,7 +18,7 @@ function render_etsy_prod()
 	html = html+'</tr><tr>';
 	
 	for (var i = 0; i <= 2; i++)
-		html = html+'<td style="width: 150px; overflow: hidden;">'+etsy_prod[i].name.substring(0, 100)+'</td>';
+		html = html+'<td class="choice-desc">'+etsy_prod[i].name.substring(0, 100)+'</td>';
 		
 	html = html+'</tr></table>';
 	$('#step1-choices').fadeTo('normal', 0, function(){
@@ -62,6 +62,11 @@ function render_hp_food()
 	for (var i = 0; i <= 2; i++)
 		html = html+'<td id="step3-holder'+i+'" class="step3-holder"><img id="'+i+'" class="step3-images" src="' + hp_food[i].image + '" width="250px" height="250px" /></td>';
 		
+	html = html+'</tr><tr>';
+
+	for (var i = 0; i <= 2; i++)
+		html = html+'<td class="choice-desc"><b>'+hp_food[i].name.substring(0, 100)+'</b><br />'+hp_food[i].address+'</td>';
+
 	html = html+'</tr></table>';
 	$('#step3-choices').fadeTo('normal', 0, function(){
 		$('#step3-choices').html(html).fadeTo('normal', 1);
@@ -87,7 +92,7 @@ function render_hp_food()
 function request_hp_food()
 {
 	$.ajax({
-		url: '/hp/New+York/food/1',
+		url: '/hp/New+York/food/any',
 		async: 'true',
 		dataType: 'json',
 		timeout: 1000, 
@@ -106,6 +111,11 @@ function render_hp_places()
 	for (var i = 0; i <= 2; i++)
 		html = html+'<td id="step2-holder'+i+'" class="step2-holder"><img id="'+i+'" class="step2-images" src="' + hp_places[i].image + '" width="250px" height="250px" /></td>';
 		
+	html = html+'</tr><tr>';
+
+	for (var i = 0; i <= 2; i++)
+		html = html+'<td class="choice-desc"><b>'+hp_places[i].name.substring(0, 100)+'</b><br />'+hp_places[i].address+'</td>';
+
 	html = html+'</tr></table>';
 	$('#step2-choices').fadeTo('normal', 0, function(){
 		$('#step2-choices').html(html).fadeTo('normal', 1);
@@ -147,7 +157,11 @@ function render_hp_hotel()
 	
 	for (var i = 0; i <= 2; i++)
 		html = html+'<td id="step4-holder'+i+'" class="step4-holder"><img id="'+i+'" class="step4-images" src="' + hp_hotel[i].image + '" width="250px" height="250px" /></td>';
-		
+	html = html+'</tr><tr>';
+
+	for (var i = 0; i <= 2; i++)
+		html = html+'<td class="choice-desc"><b>'+hp_hotel[i].name.substring(0, 100)+'</b><br />'+hp_hotel[i].address+'</td>';
+
 	html = html+'</tr></table>';
 	$('#step4-choices').fadeTo('normal', 0, function(){
 		$('#step4-choices').html(html).fadeTo('normal', 1);
