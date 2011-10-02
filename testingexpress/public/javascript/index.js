@@ -221,8 +221,9 @@ function generate_results()
 	html += '<tr><td class="color_alt"><b>Evening</b> '+hp_hotel[hp_hotel_sel].name+'<br />'+hp_hotel[hp_hotel_sel].address+'</td></tr>';
 	html += '</table>';
 	
-	html += '</td><td width="50%">';
-	
+	html += '</td><td id="map_canvas" width="50%">';
+	html += '<img src="https://home.stevenlu.com/~sjlu/staticmap.png" style="margin-left: 20px;" />';
+//	html += '<img src="http://maps.google.com/maps/api/staticmap?size=256x256&maptype=roadmap&sensor=false&markers='+encodeURIComponent(hp_places[hp_places_sel].address)+'&makers='+encodeURIComponent(hp_food[hp_food_sel].address)+'&markers='+encodeURIComponent(hp_hotel[hp_hotel_sel].address)+'" alt="Static, Marked Map of Chicago, Illinois"></img>';
 	html += '</td></tr></table>';
 	
 	$('#results').html(html);
