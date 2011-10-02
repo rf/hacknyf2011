@@ -65,7 +65,7 @@ exports.hyperpublic = function (db) {
                   if (test === 2) {
                      locations_with_value.push (res[i]);
                   }
-                  if ((test2 === 1) && ((category === 'hotels') || (category === 'entertainment'))) {
+                  if ((test2 === 1) && ((category === 'hotels') || (category === 'entertainment') || (category === 'motel'))) {
                      locations_with_value.push (res[i]);
                   }
                }
@@ -91,13 +91,13 @@ exports.hyperpublic = function (db) {
                if (loc_len === 0) done_loops++;
                var loc_done = 0;
                locations.forEach(function (doc) {
-                     loc_done++;
-                     if (loc_done === (loc_len-1)) {
-                        done_loops++;
-                     }
-                     priv.db.save(doc);
+                  done_loops++;
+                  //loc_done++;
+                  if (loc_done === (loc_len-1)) {
+                  }
+                  priv.db.save(doc);
                });
-               if (done_loops === 2) callback();
+               if (done_loops === 3) callback();
                //console.log (JSON.stringify (locations, null, 3));
             }
          );
