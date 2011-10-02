@@ -51,11 +51,11 @@ app.get('/', function(req, res){
 });
 
 app.get('/city', function(req,res){
-   console.log(req.connection);
+   //console.log(req.connection);
    city.lookup(req.connection.remoteAddress, function(err, data) {
     if (err) {throw err;}
     if (data) {
-        console.log(data);
+        //console.log(data);
          res.json(data);
     }
   });
@@ -64,7 +64,7 @@ app.get('/city', function(req,res){
 
 
 app.get("/hp/:loc/:cat/:price", function (req, res) {
-   console.log(req.params);
+  // console.log(req.params);
    hp.findLocations (
       req.params.loc, 
       req.params.price, 
@@ -166,5 +166,5 @@ app.get("/etsy/:max_price/:num_to_return", function (req,res){
    );
 });
 
-app.listen(3222);
+app.listen(80);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

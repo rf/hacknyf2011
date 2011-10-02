@@ -27,7 +27,6 @@ exports.etsy = function (collection) {
         pub.findGifts= function (my_price,num_to_return,callback) {
                num_to_return = Number(num_to_return); 
                my_price = Number(my_price);
-               console.log("everything should have a price less than " + my_price);
                priv.collection.find( { price : { $lte: my_price} } ).toArray( function (err, arr){
                   if( !err){
                      var len = arr.length;

@@ -4,13 +4,17 @@ var _ = require('underscore');
 
 var yelp = require("yelp").createClient({
 //            consumer_key: "swwatQcoJz1db2Ec2hFXZQ",
-            consumer_key: "U5XZjjllVhC4gt1rtEabrw",
+            ///consumer_key: "U5XZjjllVhC4gt1rtEabrw",
+            consumer_key: "fIAc81be_pt__L3TK47mNw",
 //            consumer_secret: "-XTXcYvgPh8anInpAYrSImmOTHs",
-            consumer_secret: "0cw0RHLsBi4nKfNfGsWS6vC9AfA",
+            //consumer_secret: "0cw0RHLsBi4nKfNfGsWS6vC9AfA",
+            consumer_secret: "kU4yrKwddUBHnNa0Q_1BcMB1w04",
 //            token: "jLzcmltuso2zCO51O6ID1S8UcePSiX_S",
-            token: "AiysCogTNSwz1QK5aVdS1i15GB7toLmc",
+           //token: "AiysCogTNSwz1QK5aVdS1i15GB7toLmc",
+          token: "Y83jY74FM3JIA5xsol7HEn5vurZsGGqi",
 //            token_secret: "LlDzta29cjw-fh-4fH0eMNe2jbI"
-            token_secret: "TI_ApsukBkhlV9AulFuYdlh9RaI"
+            //token_secret: "TI_ApsukBkhlV9AulFuYdlh9RaI"
+            token_secret: "wYWG8RHd03YZa1MvXsc0juSVxxk"
     });
 
 
