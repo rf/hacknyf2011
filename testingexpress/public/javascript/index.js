@@ -7,6 +7,7 @@ var hp_food = null;
 var hp_food_sel = 0;
 var hp_hotel = null;
 var hp_hotel_sel = 0;
+var zip_code = null;
 
 function render_etsy_prod()
 {
@@ -46,7 +47,7 @@ function request_etsy_prod()
 		url: '/etsy/50/3',
 		async: 'true',
 		dataType: 'json',
-		timeout: 1000, 
+		timeout: 10000, 
 		success: function ( data )
 		{ 
 			etsy_prod = data;
@@ -92,10 +93,10 @@ function render_hp_food()
 function request_hp_food()
 {
 	$.ajax({
-		url: '/hp/New+York/food/any',
+		url: '/hp/'+zip_code+'/food/any',
 		async: 'true',
 		dataType: 'json',
-		timeout: 1000, 
+		timeout: 10000, 
 		success: function ( data )
 		{ 
 			hp_food = data;
@@ -139,10 +140,10 @@ function render_hp_places()
 function request_hp_places()
 {
 	$.ajax({
-		url: '/hp/new+york/entertainment/any',
+		url: '/hp/'+zip_code+'/entertainment/any',
 		async: 'true',
 		dataType: 'json',
-		timeout: 1000, 
+		timeout: 10000, 
 		success: function ( data )
 		{ 
 			hp_places = data;
@@ -185,10 +186,10 @@ function render_hp_hotel()
 function request_hp_hotel()
 {
 	$.ajax({
-		url: '/hp/new+york/hotels/any',
+		url: '/hp/'+zip_code+'/hotels/any',
 		async: 'true',
 		dataType: 'json',
-		timeout: 1000, 
+		timeout: 10000, 
 		success: function ( data )
 		{ 
 			hp_hotel = data;
@@ -286,8 +287,18 @@ $(document).ready(function() {
 		});
 	});
 	
-	request_hp_food();
-	request_hp_places();
-	request_etsy_prod();	
-	request_hp_hotel();
+	$.ajax({
+		url: '/city',
+		async: 'true',
+		dataType: 'json',
+		timeout: 1000, 
+		success: function ( data )
+		{ 
+			zip_code = data.postal_code;
+			request_hp_food();
+			request_hp_places();
+			request_etsy_prod();	
+			request_hp_hotel();
+		}
+	});
 });
