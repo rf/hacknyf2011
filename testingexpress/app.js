@@ -5,6 +5,7 @@
 var express = require('express');
 var app = module.exports = express.createServer();
 var posts = require('./models/posts').posts('localhost', 27017);
+var etsy = require('./models/etsy').etsy();
 
 /**
  * Server configuration.
@@ -36,5 +37,18 @@ app.get('/', function(req, res){
    res.render('index', { title: "cheapchap" });
 });
 
-app.listen(3001);
+
+app.get("/etsy/:max_price", function (req,res){
+      etsy.findGifts(req.params.max_price,function(error,data){
+         if (error){   
+
+         }else{
+            res.json(data);
+
+         }
+      })
+
+   })
+
+app.listen(3011);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
