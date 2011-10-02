@@ -1,25 +1,57 @@
-div.header
+div#header
    table
       tr
-         td.logo
+         td#logo
             img(src='/images/logo.png')
-         td.headline
+         td#headline
             p Love ain't cheap but your date can be.
-div.container
-   div.steps
+div#container
+   div#steps
       ul
-         li.step1 1. The Basics
-         li.step2 2. A Place to Frolic
-         li.step3 3. A Venue to Dine
-         li.step4 4. Close the Deal
-         li.step5 5. Print Your Itinerary
-   div#outer-box
-      div#inner-top-box
-         div#steps-desc
-            div#steps-desc-name
+         li#step1 1. The Basics
+         li#step2 2. A Place to Frolic
+         li#step3 3. A Venue to Dine
+         li#step4 4. Close the Deal
+         li#step5 5. Print Your Itinerary
+   div.outer-box
+      div.inner-top-box#step1-page
+         div.steps-desc
+            div.steps-desc-name
                p Step One
-            div#steps-desc-text
+            div.steps-desc-text
                p Start the date off on the right note with perfect present from etsy.
-      div.inner-bottom-box
-         button.prev-button
-         button.next-button
+         button.refresh-button
+         div.choices#step1-choices
+      div.inner-top-box#step2-page
+         div.steps-desc
+            div.steps-desc-name
+               p Step Two
+            div.steps-desc-text
+               p Search through a selection of places to sweeten the deal.
+         button.refresh-button
+         div.choices#step2-choices
+      div.inner-top-box#step3-page
+         div.steps-desc
+            div.steps-desc-name
+               p Step Three
+            div.steps-desc-text
+               p Engagement is priceless. Food? Not so much, so lets keep it cheap.
+         button.refresh-button
+         div.choices#step3-choices
+      div.inner-top-box#step4-page
+         div.steps-desc
+            div.steps-desc-name
+               p Step Four
+            div.steps-desc-text
+               p Finish it off classy by sleeping at a high class hotel.
+         button.refresh-button
+         div.choices#step4-choices
+      div.inner-top-box#step5-page
+         div.steps-desc
+            div.steps-desc-name
+               p Step Five
+            div.steps-desc-text
+               p Keep this in your pocket just incase you forget.
+      div#inner-bottom-box
+         button#prev-button
+         button#next-button

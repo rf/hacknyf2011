@@ -8,6 +8,7 @@ var express = require('express'),
     mongo = require('mongolian'),
     mongo_server = new mongo(),
     db = mongo_server.db('cheapchap'),
+    qs = require('querystring'),
     etsy = require('./models/etsy').etsy(db.collection('etsy')),
     hp = require('./models/hyperpublic').hyperpublic(db.collection('locations'));
 
@@ -54,6 +55,44 @@ app.get("/hp/:loc/:cat/:price", function (req, res) {
    );
 });
 
+app.post("/date_engine",  function (request, response) {
+  var zip_code = request.body.location; 
+  if ( typeof(zip_code) == "undefined"){
+      response.send("<message><content>You need to set a location before you can get date ideas <br/><a query=\"scratch.russfrank.us\" /> Back to home</content></message>\n");
+  }
+  zip_code = zip_code.replace(" ","+");
+  console.log("zip code is..." + zip_code);
+  var price = "2";
+  hp.findLocations( zip_code, price, "food", function (food_arr){
+     var food_place = food_arr;
+      hp.findLocations( zip_code, price, "food", function (hotel_arr){
+         var hotel_place = hotel_arr; 
+
+         hp.findLocations( zip_code, price, "entertainment", function (frolic_arr){
+            var frolic_place = frolic_arr; 
+            etsy.findGifts( "25", "1", function (error, data){
+               console.log(data);
+               var gift = data[0];
+               gift['name'] = gift['name'].replace("/<.*?>/","");
+               gift['name'] = gift['name'].replace("/&/","");
+               gift['description'] = gift['description'].replace("/&/","");
+               var output = "<message><content>\n";
+                  output += "Your Date Intinerary:<br/>\n";
+                  output += "<anchor><message><content>" + gift['name'] + "-- $" + gift['price'] + "<br/>" + gift['description']+ " </content></message></anchor>Gift: " + gift['name'] + " -- $" + gift['price'] + "<br/>\n";
+
+               output += "</content></message>\n";    
+               console.log("We should be sending out response....");
+               response.send(output);
+            });
+         });
+
+    });
+
+
+   });
+      
+});
+
 app.get("/etsy/:max_price/:num_to_return", function (req,res){
    etsy.findGifts(
       req.params.max_price, req.params.num_to_return,
@@ -67,5 +106,5 @@ app.get("/etsy/:max_price/:num_to_return", function (req,res){
    );
 });
 
-app.listen(3011);
+app.listen(3222);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
