@@ -2,10 +2,14 @@
  * Module dependencies.
  */
 
-var express = require('express');
-var app = module.exports = express.createServer();
-var posts = require('./models/posts').posts('localhost', 27017);
-var etsy = require('./models/etsy').etsy();
+var express = require('express'),
+    app = module.exports = express.createServer(),
+    posts = require('./models/posts').posts('localhost', 27017),
+    etsy = require('./models/etsy').etsy(),
+    mongo = require('mongolian'),
+    mongo_server = new mongo(),
+    db = mongo_server.db('cheapchap'),
+    hp = require('./models/hyperpublic').hyperpublic(db.collection('locations'));
 
 /**
  * Server configuration.
@@ -38,17 +42,30 @@ app.get('/', function(req, res){
 });
 
 
+app.get("/hp/:loc/:cat/:price", function (req, res) {
+   console.log(req.params);
+   hp.findLocations (
+      req.params.loc, 
+      req.params.price, 
+      req.params.cat,
+      function (arr) {
+         res.json(arr);
+      }
+   );
+});
+
 app.get("/etsy/:max_price", function (req,res){
-      etsy.findGifts(req.params.max_price,function(error,data){
+   etsy.findGifts(
+      req.params.max_price,
+      function(error,data) {
          if (error){   
-
-         }else{
+            throw error;
+         } else {
             res.json(data);
-
          }
-      })
+      }
+   );
+});
 
-   })
-
-app.listen(3011);
+app.listen(3012);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
