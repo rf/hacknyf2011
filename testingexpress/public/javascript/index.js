@@ -1,6 +1,8 @@
 var step = 1;
 var etsy_prod = null;
 var etsy_prod_sel = 0;
+var hp_places = null;
+var hp_places_sel = 0;
 var hp_food = null;
 var hp_food_sel = 0;
 var hp_hotel = null;
@@ -12,6 +14,11 @@ function render_etsy_prod()
 	
 	for (var i = 0; i <= 2; i++)
 		html = html+'<td id="step1-holder'+i+'" class="step1-holder"><img id="'+i+'" class="step1-images" src="' + etsy_prod[i].image + '" width="250px" height="250px" /></td>';
+	
+	html = html+'</tr><tr>';
+	
+	for (var i = 0; i <= 2; i++)
+		html = html+'<td style="width: 150px; overflow: hidden;">'+etsy_prod[i].name.substring(0, 100)+'</td>';
 		
 	html = html+'</tr></table>';
 	$('#step1-choices').fadeTo('normal', 0, function(){
@@ -92,12 +99,54 @@ function request_hp_food()
 	});
 }
 
+function render_hp_places()
+{
+	var html = '<table border="0"><tr>';
+	
+	for (var i = 0; i <= 2; i++)
+		html = html+'<td id="step2-holder'+i+'" class="step2-holder"><img id="'+i+'" class="step2-images" src="' + hp_places[i].image + '" width="250px" height="250px" /></td>';
+		
+	html = html+'</tr></table>';
+	$('#step2-choices').fadeTo('normal', 0, function(){
+		$('#step2-choices').html(html).fadeTo('normal', 1);
+		
+		$('#step2-holder'+hp_places_sel).animate({backgroundColor: '#b5def2'}, 'fast');
+
+		$('.step2-images').each(function() {
+			$(this).click(function() {
+				hp_places_sel = $(this).attr("id");
+
+				$('.step2-holder').each(function() {
+					$(this).animate({backgroundColor: '#eee'}, 'fast');
+				});
+
+				$('#step2-holder'+hp_places_sel).animate({backgroundColor: '#b5def2'}, 'fast');
+			});
+		});
+	});
+}
+
+function request_hp_places()
+{
+	$.ajax({
+		url: '/hp/new+york/entertainment/any',
+		async: 'true',
+		dataType: 'json',
+		timeout: 1000, 
+		success: function ( data )
+		{ 
+			hp_places = data;
+			render_hp_places();
+		}
+	});
+}
+
 function render_hp_hotel()
 {
 	var html = '<table border="0"><tr>';
 	
 	for (var i = 0; i <= 2; i++)
-		html = html+'<td id="step4-holder'+i+'" class="step4-holder"><img id="'+i+'" class="step4-images" src="' + hp_food[i].image + '" width="250px" height="250px" /></td>';
+		html = html+'<td id="step4-holder'+i+'" class="step4-holder"><img id="'+i+'" class="step4-images" src="' + hp_hotel[i].image + '" width="250px" height="250px" /></td>';
 		
 	html = html+'</tr></table>';
 	$('#step4-choices').fadeTo('normal', 0, function(){
@@ -122,7 +171,7 @@ function render_hp_hotel()
 function request_hp_hotel()
 {
 	$.ajax({
-		url: '/hp/New+York/hotel/any',
+		url: '/hp/new+york/hotels/any',
 		async: 'true',
 		dataType: 'json',
 		timeout: 1000, 
@@ -200,7 +249,7 @@ $(document).ready(function() {
 			if (step == 1)
 				request_etsy_prod();
 			else if (step == 2)
-				request_etsy_prod();
+				request_hp_places();
 			else if (step == 3)
 				request_hp_food();
 			else if (step == 4)
@@ -209,6 +258,7 @@ $(document).ready(function() {
 	});
 	
 	request_hp_food();
+	request_hp_places();
 	request_etsy_prod();	
 	request_hp_hotel();
 });

@@ -77,13 +77,14 @@ exports.hyperpublic = function (db) {
                      }
                   });
                   locations.push({
-                     "_id"       : place.display_name,
+                     "_id"       : place.display_name + loc,
                      "name"      : place.display_name,
                      "category"  : category,
                      "location"  : loc,
                      "price"     : pr,
                      "image"     : place.image,
-                     "address"   : place.locations[0].name
+                     "address"   : place.locations[0].name,
+                     "phone"     : place.phone_number
                   });
                });
                var loc_len = locations.length;
@@ -114,15 +115,16 @@ exports.hyperpublic = function (db) {
       priv.db.find(search).toArray (function (err, arr) {
          if (err) throw err;
          var rnd = Math.floor(Math.random()*(arr.length - 1));
-         var rnd2 = Math.floor(Math.random()*(arr.length - 1));
-         var rnd3 = Math.floor(Math.random()*(arr.length - 1));
-//         arr = arr.slice(rnd, rnd+3);
+//         var rnd2 = Math.floor(Math.random()*(arr.length - 1));
+//         var rnd3 = Math.floor(Math.random()*(arr.length - 1));
+         arr = arr.slice(rnd, rnd+3);
  //        console.log (arr);
  //        console.log(arr[0].name);
  //        console.log(arr[1].name);
  //        console.log(arr[2].name);
         
-         callback ([arr[rnd], arr[rnd2], arr[rnd3]]);
+ //        callback ([arr[rnd], arr[rnd2], arr[rnd3]]);
+         callback(arr);
       });
    };
 
