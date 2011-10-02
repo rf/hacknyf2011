@@ -197,6 +197,18 @@ function request_hp_hotel()
 	});
 }
 
+function generate_results()
+{
+	html = '<table border="0">';
+	html += '<tr><td>'+etsy_prod[etsy_prod_sel].name+'</td></tr>';
+	html += '<tr><td>'+hp_places[hp_places_sel].name+'</td></tr>';
+	html += '<tr><td>'+hp_food[hp_food_sel].name+'</td></tr>';
+	html += '<tr><td>'+hp_hotel[hp_hotel_sel].name+'</td></tr>';
+	html += '</table>';
+	
+	$('.results').html(html);
+}
+
 function handle_steps()
 {
 		if (step-1 >= 1)
@@ -237,6 +249,9 @@ $(document).ready(function() {
 			step++;
 		else
 			return;
+			
+		if (step == 5)
+			generate_results();
 			
 		$('#step'+(step-1)+'-page').hide('slide', {direction:'left'}, 500);
 		$('#step'+step+'-page').show('slide', {direction:'right'}, 500);
