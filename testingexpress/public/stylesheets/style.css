@@ -79,17 +79,29 @@ a:hover {
   padding-left: 80px;
   font-weight: none;
 }
-#refresh-button {
-  margin: -8px 0 0 720px;
+.choices {
+  width: 100%;
+  margin-top: 40px;
+}
+.choices table {
+  margin: 0 auto;
+}
+.choices td {
+  background-color: #eee;
+  padding: 5px;
+  border: 5px solid #fff;
+}
+.refresh-button {
+  margin: -10px 0 0 720px;
   background: url("/images/refresh.png") no-repeat 0 0;
   width: 127px;
   height: 31px;
   border: 0;
 }
-#refresh-button:hover {
+.refresh-button:hover {
   background-position: 0 -31px;
 }
-#refresh-button:active {
+.refresh-button:active {
   background-position: 0 -62px;
 }
 #inner-bottom-box {
