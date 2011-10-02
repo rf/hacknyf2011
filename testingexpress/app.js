@@ -129,13 +129,18 @@ app.post("/date_engine",  function (request, response) {
 
                   output += "<anchor><message><content>" + gift['name'] + "-- $" + gift['price'] + "<br/>" + gift['description']+ " </content></message></anchor>Gift: " + gift['name'] + " -- $" + gift['price'] + "<br/>\n";
 
-
+                  if(frolic_place){
                   output += "<anchor><message><content>" + frolic_place['name'] + "<br/>" + frolic_place['address']+ " </content></message></anchor>Activity: " + frolic_place['name'] +  "<br/>\n";
-
+                  }
+                  
+                  if(food_place){
                   output += "<anchor><message><content>" + food_place['name'] + "<br/>" + food_place['address'] + " </content></message></anchor>Food: " + food_place['name'] +"<br/>\n";
                   
+                  }
+            
+                  if(hotel_place){
                   output += "<anchor><message><content>" + hotel_place['name'] +  "<br/>" + hotel_place['address']+ " </content></message></anchor>Accommodations: " + hotel_place['name']+ "<br/>\n";
-
+                  }
                output += "</content></message>\n";    
                response.send(output);
             });
