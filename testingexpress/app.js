@@ -5,10 +5,10 @@
 var express = require('express'),
     app = module.exports = express.createServer(),
     posts = require('./models/posts').posts('localhost', 27017),
-    etsy = require('./models/etsy').etsy(),
     mongo = require('mongolian'),
     mongo_server = new mongo(),
     db = mongo_server.db('cheapchap'),
+    etsy = require('./models/etsy').etsy(db.collection('etsy')),
     hp = require('./models/hyperpublic').hyperpublic(db.collection('locations'));
 
 /**
