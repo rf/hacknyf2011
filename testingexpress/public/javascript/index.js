@@ -215,10 +215,10 @@ function generate_results()
 	html = '<table border="0"><tr><td width="50%">';
 
 	html += '<table id="results_table" border="0">';
-	html += '<tr><td class="color"><b>Basic</b> <a href="'+etsy_prod[etsy_prod_sel]+'">'+etsy_prod[etsy_prod_sel].name+'</a> ($'+etsy_prod[etsy_prod_sel].price+')</td></tr>';
+	html += '<tr><td class="color"><b>Basic</b> <a href="'+etsy_prod[etsy_prod_sel].url+'">'+etsy_prod[etsy_prod_sel].name+'</a> ($'+etsy_prod[etsy_prod_sel].price+')</td></tr>';
 	html += '<tr><td class="color_alt"><b>Frolicking</b> <a href="'+hp_places[hp_places_sel].url+'">'+hp_places[hp_places_sel].name+'</a><br />'+hp_places[hp_places_sel].address+'</td></tr>';
-	html += '<tr><td class="color"><b>Dining</b> <a href="'+hp_food[hp_food_sel]+'">'+hp_food[hp_food_sel].name+'</a><br />'+hp_food[hp_food_sel].address+'</td></tr>';
-	html += '<tr><td class="color_alt"><b>Evening</b> <a href="'+hp_hotel[hp_hotel_sel]+'">'+hp_hotel[hp_hotel_sel].name+'</a><br />'+hp_hotel[hp_hotel_sel].address+'</td></tr>';
+	html += '<tr><td class="color"><b>Dining</b> <a href="'+hp_food[hp_food_sel].url+'">'+hp_food[hp_food_sel].name+'</a><br />'+hp_food[hp_food_sel].address+'</td></tr>';
+	html += '<tr><td class="color_alt"><b>Evening</b> <a href="'+hp_hotel[hp_hotel_sel].url+'">'+hp_hotel[hp_hotel_sel].name+'</a><br />'+hp_hotel[hp_hotel_sel].address+'</td></tr>';
 	html += '</table>';
 	
 	html += '</td><td id="map_canvas" width="50%">';
