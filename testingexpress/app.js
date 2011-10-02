@@ -65,7 +65,7 @@ app.post("/date_engine",  function (request, response) {
   var price = "2";
   hp.findLocations( zip_code, price, "food", function (food_arr){
      var food_place = food_arr[0];
-      hp.findLocations( zip_code, price, "hotels", function (hotel_arr){
+      hp.findLocations( zip_code, "any", "hotels", function (hotel_arr){
          var hotel_place = hotel_arr[0]; 
 
          hp.findLocations( zip_code, price, "entertainment", function (frolic_arr){
