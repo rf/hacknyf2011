@@ -33,7 +33,7 @@ exports.etsy = function (collection) {
                      var len = arr.length;
                     var randomnumber=Math.floor(Math.random()* (len - (num_to_return -1)) );
                      var slice = arr.slice(randomnumber, (randomnumber + num_to_return));
-                     console.log(slice[0]);
+                     //console.log(slice[0]);
                      callback(0,slice);
                   }
 

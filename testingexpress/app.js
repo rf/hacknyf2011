@@ -64,6 +64,7 @@ app.post("/date_engine",  function (request, response) {
   console.log("zip code is..." + zip_code);
   var price = "2";
   hp.findLocations( zip_code, price, "food", function (food_arr){
+     console.log(food_arr);
      var food_place = food_arr[0];
       hp.findLocations( zip_code, "any", "hotels", function (hotel_arr){
          var hotel_place = hotel_arr[0]; 
