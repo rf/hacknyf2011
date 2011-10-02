@@ -102,7 +102,8 @@ app.get("/yelp/:location/:catagory/:num_to_return", function (req, res){
 app.post("/date_engine",  function (request, response) {
   var zip_code = request.body.location; 
   if ( typeof(zip_code) == "undefined"){
-      response.send("<message><content>You need to set a location before you can get date ideas <br/><a query=\"scratch.russfrank.us\" /> Back to home</content></message>\n");
+      response.send("<message><content>You need to set a location before you can get date ideas <br/><a query=\"scratch.russfrank.us\" /> Back to home <br/> <a query='scratch.russfrank.us' /> Set Location</content></message>\n");
+        return; 
   }
   zip_code = zip_code.replace(" ","+");
   //console.log("zip code is..." + zip_code);
