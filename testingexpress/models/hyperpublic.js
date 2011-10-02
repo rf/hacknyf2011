@@ -37,7 +37,7 @@ exports.hyperpublic = function (db) {
    priv.cacheLocations = function (loc, value, category, callback) {
       var i, j, key, leni, lenj, locations_with_value = [], locations = [], test,
           k, done_loops = 0;
-      for (k = 1; k <= 4; k++) {
+      for (k = 1; k <= 20; k++) {
          priv.rest ('places', {location : loc, 'category' : category, 'page' : k, 'page_size' : 50},
             function(res) {
                leni = res.length;
@@ -48,16 +48,18 @@ exports.hyperpublic = function (db) {
     //                 console.log (res[i].properties[j]);
                      if (res[i].properties[j].key === "price") {
     //                    locations_with_value.push(res[i]);
-                        test = 1;
+                        test++;
                      }
                   }
                   lenj = res[i].images.length;
                   for (j = 0; j < lenj; j++) {
-                     if (res[i].images[j].src_large !== "http://hyperpublic.com/images/icons/public_place/gov/square.png") {
-                        //test++;
+                     if ((res[i].images[j].src_large.indexOf("public_place") === -1 ) &&
+                         (res[i].images[j].src_large.indexOf("knifefork") === -1)) {
+                        test++;
+                        res[i].image = res[i].images[j].src_large;
                      }
                   }
-                  if (test === 1) {
+                  if (test === 2) {
                      locations_with_value.push (res[i]);
                   }
                }
@@ -73,7 +75,7 @@ exports.hyperpublic = function (db) {
                      "category"  : category,
                      "location"  : loc,
                      "price"     : pr,
-                     "image"     : place.images[0].src_large,
+                     "image"     : place.image,
                      "address"   : place.locations[0].name
                   });
                });
@@ -98,7 +100,7 @@ exports.hyperpublic = function (db) {
 
    priv.runCachedQuery = function (theloc, thevalue, thecategory, callback) {
       console.log ("price: " + thevalue);
-      priv.db.find({location: theloc, category:thecategory, price:Number(thevalue)}).toArray (function (err, arr) {
+      priv.db.find({location: theloc, category:thecategory, price:Number(thevalue)}).limit(5).toArray (function (err, arr) {
          if (err) throw err;
          console.log (arr);
          callback (arr);
