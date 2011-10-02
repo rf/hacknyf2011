@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cmrl xmlns:dotgo="http://dotgo.com/cmrl/1.0">
+
+  <match pattern="">
+    <message>
+      <content>Welcome to CheapChap<br/> Our tagline is awesome<br/>
+               <a query="scratch.russfrank.us date" /> Get Date Idea <br/>
+               <a query="scratch.russfrank.us location" /> Set Location <br/>
+               <a query="scratch.russfrank.us reset" /> Reset Location<br/>
+               Your current location is <get name="location" />
+      </content>
+    </message>
+  </match>
+
+  <match pattern="location">
+   <message>
+      <content>
+         Reply with your 5 digit zip code
+      </content>
+      <input name="location">
+               <!--<query>scratch.russfrank.us</query>-->   
+               <message><content>Location Set! <br/><a query="scratch.russfrank.us" /> Back to Home</content></message>
+      </input>
+   </message>
+  </match>
+
+
+  <match pattern="reset">
+    <block>
+      <set name="location" />
+        <query> scratch.russfrank.us</query>
+     </block> 
+   </match>
+
+
+   <match pattern="date">
+      <engine href="http://scratch.russfrank.us/date_engine" />
+   </match> 
+</cmrl>
