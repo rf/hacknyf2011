@@ -41,13 +41,15 @@ exports.etsy = function () {
                                 var item = {};
                                 var item_old = items['results'][key];
                                 item['name'] = item_old['title'];
+                              
                   
                                 item['description'] = item_old['description'];
                                 item['price'] = item_old['price'];
                                 item['image'] = item_old['Images'][0]['url_570xN'];
                                 item['url'] = item_old['url'];
                                 //console.log(items['results'][key]);
-                                if (item['price'] <= price){
+               
+                                if ((item['price'] <= price) && ( ! item['name'].match(/mold/i ))){
                                    toReturn.push(item);
                                 }
                      }else{
