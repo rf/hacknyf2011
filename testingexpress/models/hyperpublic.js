@@ -3,10 +3,14 @@ var mongo = require('mongolian');
 var _ = require('underscore');
 
 var yelp = require("yelp").createClient({
-            consumer_key: "swwatQcoJz1db2Ec2hFXZQ",
-            consumer_secret: "-XTXcYvgPh8anInpAYrSImmOTHs",
-            token: "jLzcmltuso2zCO51O6ID1S8UcePSiX_S",
-            token_secret: "LlDzta29cjw-fh-4fH0eMNe2jbI"
+//            consumer_key: "swwatQcoJz1db2Ec2hFXZQ",
+            consumer_key: "U5XZjjllVhC4gt1rtEabrw",
+//            consumer_secret: "-XTXcYvgPh8anInpAYrSImmOTHs",
+            consumer_secret: "0cw0RHLsBi4nKfNfGsWS6vC9AfA",
+//            token: "jLzcmltuso2zCO51O6ID1S8UcePSiX_S",
+            token: "AiysCogTNSwz1QK5aVdS1i15GB7toLmc",
+//            token_secret: "LlDzta29cjw-fh-4fH0eMNe2jbI"
+            token_secret: "TI_ApsukBkhlV9AulFuYdlh9RaI"
     });
 
 
@@ -17,6 +21,9 @@ exports.hyperpublic = function (db) {
 var doyelp = function (req, res){
       for( var i =0; i < 10; i++){
               yelp.search({term: req.cat, location: req.loc, offset: i*20}, function(error, data) {
+               if (error) {
+                  console.log (error);
+               }
                  for(var key in data['businesses']){
                     var item = data['businesses'][key];
 
@@ -31,8 +38,8 @@ var doyelp = function (req, res){
                     toInsert['image'] = item['image_url'];
                     toInsert['name'] = item['name'];
                     toInsert['address'] = item['location']['display_address'][0] + ", " +  item['location']['display_address'][1];
+                    toInsert.url = item['url'];
                     priv.db.save(toInsert);
-                     console.log (toInsert);
                  }
          });
       }
@@ -64,7 +71,7 @@ var doyelp = function (req, res){
             response = JSON.parse(response);
          } catch (e) {
             console.log (response);
-            throw e;
+            return;
          }
          callback (response);
       });
@@ -106,6 +113,7 @@ var doyelp = function (req, res){
                      locations_with_value.push (res[i]);
                   }
                }
+               var loc_len = 0;
                locations_with_value.forEach(function (place) {
                   var pr;
                   place.properties.forEach(function (prop) {
@@ -121,18 +129,15 @@ var doyelp = function (req, res){
                      "price"     : pr,
                      "image"     : place.image,
                      "address"   : place.locations[0].name,
-                     "phone"     : place.phone_number
+                     "phone"     : place.phone_number,
+                     "url"       : place.perma_link
                   });
+                  loc_len++;
                });
-               var loc_len = locations.length;
                done_loops+=loc_len;
-               if (loc_len === 0) done_loops++;
-               var loc_done = 0;
+               console.log('loc_len is ' + loc_len);
+               console.log('done loops is: ' + done_loops);
                locations.forEach(function (doc) {
-                  done_loops++;
-                  //loc_done++;
-                  if (loc_done === (loc_len-1)) {
-                  }
                   priv.db.save(doc);
                });
                if (done_loops >= 3 && !called_callback) {
@@ -170,6 +175,8 @@ var doyelp = function (req, res){
    };
 
    pub.findLocations = function (loc, value, category, callback) {
+      loc = loc.toLowerCase();
+      category = category.toLowerCase();
       priv.db.findOne({'loc' : loc, 'category': category}, function (err, data) {
          if (err) {
             throw err;
