@@ -82,8 +82,10 @@ exports.hyperpublic = function (db) {
                locations.forEach(function (doc) {
                   priv.db.save(doc, function () {
                      loc_done++;
-                     if (loc_done === loc_len-1) {
+ //                    console.log ("done locations: " + loc_done);
+                     if (loc_done === (loc_len)) {
                         done_loops++;
+   //                     console.log ("done loops: " + done_loops);
                         if (done_loops === 4) callback();
                      }
                   });
@@ -95,7 +97,8 @@ exports.hyperpublic = function (db) {
    };
 
    priv.runCachedQuery = function (theloc, thevalue, thecategory, callback) {
-      priv.db.find({location: theloc}).toArray (function (err, arr) {
+      console.log ("price: " + thevalue);
+      priv.db.find({location: theloc, category:thecategory, price:Number(thevalue)}).toArray (function (err, arr) {
          if (err) throw err;
          console.log (arr);
          callback (arr);
