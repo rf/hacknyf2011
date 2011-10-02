@@ -15,7 +15,7 @@
   <match pattern="location">
    <message>
       <content>
-         Reply with your 5 digit zip code
+         Reply with location (zipcode or city)
       </content>
       <input name="location">
                <!--<query>scratch.russfrank.us</query>-->   

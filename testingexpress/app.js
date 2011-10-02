@@ -17,6 +17,8 @@ var express = require('express'),
             token: "jLzcmltuso2zCO51O6ID1S8UcePSiX_S",
             token_secret: "LlDzta29cjw-fh-4fH0eMNe2jbI"
      });
+     var geoip = require('geoip')
+     var city = new geoip.City('/usr/share/GeoIP/GeoLiteCity.dat');  
 
 /**
  * Server configuration.
@@ -48,6 +50,18 @@ app.get('/', function(req, res){
    res.render('index', { title: "cheapchap" });
 });
 
+app.get('/city', function(req,res){
+   console.log(req.connection);
+   city.lookup(req.connection.remoteAddress, function(err, data) {
+    if (err) {throw err;}
+    if (data) {
+        console.log(data);
+         res.json(data);
+    }
+  });
+
+});
+
 
 app.get("/hp/:loc/:cat/:price", function (req, res) {
    console.log(req.params);
@@ -64,8 +78,8 @@ app.get("/hp/:loc/:cat/:price", function (req, res) {
 app.get("/yelp/:location/:catagory/:num_to_return", function (req, res){
       for( var i =0; i < 10; i++){
               yelp.search({term: req.params.catagory, location: req.params.location, offset: i*20}, function(error, data) {
-                 console.log(data);
-                 console.log("yelp gave us " +   data['businesses'].length + " results");
+                 //console.log(data);
+                 //console.log("yelp gave us " +   data['businesses'].length + " results");
                  for(var key in data['businesses']){
                     var item = data['businesses'][key];
                     var toInsert = {};
@@ -88,13 +102,14 @@ app.get("/yelp/:location/:catagory/:num_to_return", function (req, res){
 app.post("/date_engine",  function (request, response) {
   var zip_code = request.body.location; 
   if ( typeof(zip_code) == "undefined"){
-      response.send("<message><content>You need to set a location before you can get date ideas <br/><a query=\"scratch.russfrank.us\" /> Back to home</content></message>\n");
+      response.send("<message><content>You need to set a location before you can get date ideas <br/><a query=\"scratch.russfrank.us\" /> Back to home <br/> <a query='scratch.russfrank.us' /> Set Location</content></message>\n");
+        return; 
   }
   zip_code = zip_code.replace(" ","+");
-  console.log("zip code is..." + zip_code);
-  var price = "2";
+  //console.log("zip code is..." + zip_code);
+  var price = 5;
   hp.findLocations( zip_code, price, "food", function (food_arr){
-     console.log(food_arr);
+    // console.log(food_arr);
      var food_place = food_arr[0];
       hp.findLocations( zip_code, "any", "hotels", function (hotel_arr){
          var hotel_place = hotel_arr[0]; 
@@ -102,8 +117,8 @@ app.post("/date_engine",  function (request, response) {
          hp.findLocations( zip_code, price, "entertainment", function (frolic_arr){
             var frolic_place = frolic_arr[0]; 
             etsy.findGifts( "25", "1", function (error, data){
-               console.log(hotel_place);
-               console.log(food_place);
+               //console.log(hotel_place);
+               //console.log(food_place);
                var gift = data[0];
                gift['name'] = gift['name'].replace("/<.*?>/","");
                gift['name'] = gift['name'].replace("/&/","");
@@ -114,13 +129,18 @@ app.post("/date_engine",  function (request, response) {
 
                   output += "<anchor><message><content>" + gift['name'] + "-- $" + gift['price'] + "<br/>" + gift['description']+ " </content></message></anchor>Gift: " + gift['name'] + " -- $" + gift['price'] + "<br/>\n";
 
-
+                  if(frolic_place){
                   output += "<anchor><message><content>" + frolic_place['name'] + "<br/>" + frolic_place['address']+ " </content></message></anchor>Activity: " + frolic_place['name'] +  "<br/>\n";
-
+                  }
+                  
+                  if(food_place){
                   output += "<anchor><message><content>" + food_place['name'] + "<br/>" + food_place['address'] + " </content></message></anchor>Food: " + food_place['name'] +"<br/>\n";
                   
-                  output += "<anchor><message><content>" + hotel_place['name'] +  "<br/>" + food_place['address']+ " </content></message></anchor>Accommodations: " + food_place['name']+ "<br/>\n";
-
+                  }
+            
+                  if(hotel_place){
+                  output += "<anchor><message><content>" + hotel_place['name'] +  "<br/>" + hotel_place['address']+ " </content></message></anchor>Accommodations: " + hotel_place['name']+ "<br/>\n";
+                  }
                output += "</content></message>\n";    
                response.send(output);
             });
@@ -146,5 +166,5 @@ app.get("/etsy/:max_price/:num_to_return", function (req,res){
    );
 });
 
-app.listen(3011);
+app.listen(3222);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
