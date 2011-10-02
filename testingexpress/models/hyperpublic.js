@@ -36,19 +36,20 @@ exports.hyperpublic = function (db) {
 
    priv.cacheLocations = function (loc, value, category, callback) {
       var i, j, key, leni, lenj, locations_with_value = [], locations = [], test,
-          k, done_loops = 0;
-      for (k = 1; k <= 20; k++) {
+          k, done_loops = 0, test2;
+      for (k = 1; k <= 10; k++) {
          priv.rest ('places', {location : loc, 'category' : category, 'page' : k, 'page_size' : 50},
             function(res) {
                leni = res.length;
                for (i = 0; i < leni; i++) {
+                  test2 = 0;
                   test = 0;
                   lenj = res[i].properties.length;
                   for (j = 0; j < lenj; j++) {
     //                 console.log (res[i].properties[j]);
                      if (res[i].properties[j].key === "price") {
     //                    locations_with_value.push(res[i]);
-                        test++;
+                        test++; test2=1;
                      }
                   }
                   lenj = res[i].images.length;
@@ -60,6 +61,9 @@ exports.hyperpublic = function (db) {
                      }
                   }
                   if (test === 2) {
+                     locations_with_value.push (res[i]);
+                  }
+                  if ((test2 === 1) && (category === 'hotels')) {
                      locations_with_value.push (res[i]);
                   }
                }
@@ -84,11 +88,11 @@ exports.hyperpublic = function (db) {
                locations.forEach(function (doc) {
                   priv.db.save(doc, function () {
                      loc_done++;
- //                    console.log ("done locations: " + loc_done);
+                     console.log ("done locations: " + loc_done);
                      if (loc_done === (loc_len)) {
                         done_loops++;
-   //                     console.log ("done loops: " + done_loops);
-                        if (done_loops === 4) callback();
+                        console.log ("done loops: " + done_loops);
+                        if (done_loops === 1) callback();
                      }
                   });
                });
@@ -100,9 +104,11 @@ exports.hyperpublic = function (db) {
 
    priv.runCachedQuery = function (theloc, thevalue, thecategory, callback) {
       console.log ("price: " + thevalue);
-      priv.db.find({location: theloc, category:thecategory, price:Number(thevalue)}).limit(5).toArray (function (err, arr) {
+      priv.db.find({location: theloc, category:thecategory, price:Number(thevalue)}).toArray (function (err, arr) {
          if (err) throw err;
-         console.log (arr);
+         var rnd = Math.floor(Math.random()*(arr.length - 3));
+         arr = arr.slice(rnd, rnd+3);
+ //        console.log (arr);
          callback (arr);
       });
    };
