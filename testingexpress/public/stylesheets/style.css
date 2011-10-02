@@ -41,7 +41,7 @@ a:hover {
   display: inline;
   padding: 0 25px;
 }
-.outer-box {
+#outer-box {
   border: 1px solid #dedede;
   height: 500px;
   background-color: #fbfbfb;
