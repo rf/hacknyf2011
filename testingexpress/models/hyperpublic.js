@@ -19,6 +19,9 @@ var doyelp = function (req, res){
               yelp.search({term: req.cat, location: req.loc, offset: i*20}, function(error, data) {
                  for(var key in data['businesses']){
                     var item = data['businesses'][key];
+
+                  if (!item.hasOwnProperty('image_url')) continue;
+            
                     var toInsert = {};
                     toInsert['category'] = req.cat;
                     toInsert['location'] = req.loc;
