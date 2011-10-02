@@ -54,10 +54,6 @@ app.get('/about', function(req, res){
    res.render('about', { title: "cheapchap - about"});
 });
 
-app.get('/api', function(req, res){
-   res.render('api', { title: "cheapchap - api"});
-});
-
 app.get('/city', function(req,res){
    console.log(req.connection);
    city.lookup(req.connection.remoteAddress, function(err, data) {
