@@ -11,6 +11,12 @@ var express = require('express'),
     qs = require('querystring'),
     etsy = require('./models/etsy').etsy(db.collection('etsy')),
     hp = require('./models/hyperpublic').hyperpublic(db.collection('locations'));
+    var yelp = require("yelp").createClient({
+            consumer_key: "swwatQcoJz1db2Ec2hFXZQ", 
+            consumer_secret: "-XTXcYvgPh8anInpAYrSImmOTHs",
+            token: "jLzcmltuso2zCO51O6ID1S8UcePSiX_S",
+            token_secret: "LlDzta29cjw-fh-4fH0eMNe2jbI"
+     });
 
 /**
  * Server configuration.
@@ -53,6 +59,30 @@ app.get("/hp/:loc/:cat/:price", function (req, res) {
          res.json(arr);
       }
    );
+});
+
+app.get("/yelp/:location/:catagory/:num_to_return", function (req, res){
+      for( var i =0; i < 10; i++){
+              yelp.search({term: req.params.catagory, location: req.params.location, offset: i*20}, function(error, data) {
+                 console.log(data);
+                 console.log("yelp gave us " +   data['businesses'].length + " results");
+                 for(var key in data['businesses']){
+                    var item = data['businesses'][key];
+                    var toInsert = {};
+                    toInsert['catagory'] = req.params.catagory;
+                    toInsert['location'] = req.params.location;
+                    toInsert['_id'] = item['name'] + req.params.location;
+                    toInsert['phone'] = item['phone'];
+                    toInsert['price'] = 1;
+                    toInsert['image'] = item['image_url'];
+                    toInsert['name'] = item['name'];
+                    toInsert['address'] = item['location']['display_address'][0] + ", " +  item['location']['display_address'][1];
+                    var  locations = db.collection('locations');
+                    locations.save(toInsert);
+                 }
+         });
+      }
+         res.send("Ok");
 });
 
 app.post("/date_engine",  function (request, response) {
@@ -116,5 +146,5 @@ app.get("/etsy/:max_price/:num_to_return", function (req,res){
    );
 });
 
-app.listen(3222);
+app.listen(3011);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
