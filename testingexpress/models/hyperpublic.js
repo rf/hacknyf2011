@@ -2,8 +2,6 @@ var request = require('request');
 var mongo = require('mongolian');
 var _ = require('underscore');
 
-var exports = {};
-
 exports.hyperpublic = function (db) {
    "use strict";
    var pub = {}, priv = {};
@@ -79,15 +77,29 @@ exports.hyperpublic = function (db) {
                      "address"   : place.locations[0].name
                   });
                });
+               var loc_len = locations.length;
+               var loc_done = 0;
                locations.forEach(function (doc) {
-                  priv.db.save(doc);
+                  priv.db.save(doc, function () {
+                     loc_done++;
+                     if (loc_done === loc_len-1) {
+                        done_loops++;
+                        if (done_loops === 4) callback();
+                     }
+                  });
                });
-               console.log (JSON.stringify (locations, null, 3));
-               done_loops++;
-               if (done_loops === 4) callback();
+               //console.log (JSON.stringify (locations, null, 3));
             }
          );
       }
+   };
+
+   priv.runCachedQuery = function (theloc, thevalue, thecategory, callback) {
+      priv.db.find({location: theloc}).toArray (function (err, arr) {
+         if (err) throw err;
+         console.log (arr);
+         callback (arr);
+      });
    };
 
    pub.findLocations = function (loc, value, category, callback) {
@@ -97,17 +109,13 @@ exports.hyperpublic = function (db) {
          }
          if (data !== undefined) {
             // run the query out of cache
-            console.log ('run the query out of cache');
-            priv.db.find({price : value}).toArray (function (err, arr) {
-               if (err) throw err;
-               callback (arr);
-            });
+            priv.runCachedQuery (loc, value, category, callback);
          } else {
             console.log ('no cache!');
             priv.cacheLocations (loc, value, category, function () {
                priv.db.save ({'loc' : loc, 'category' : category});
                console.log ('ran cachelocations');
-               pub.findLocations (loc, value, category, callback);
+               priv.runCachedQuery (loc, value, category, callback);
             });
          }
       });
