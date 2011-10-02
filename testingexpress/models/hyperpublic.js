@@ -115,13 +115,16 @@ exports.hyperpublic = function (db) {
       }
       priv.db.find(search).toArray (function (err, arr) {
          if (err) throw err;
-         var rnd = Math.floor(Math.random()*(arr.length - 3));
-         arr = arr.slice(rnd, rnd+3);
+         var rnd = Math.floor(Math.random()*(arr.length - 1));
+         var rnd2 = Math.floor(Math.random()*(arr.length - 1));
+         var rnd3 = Math.floor(Math.random()*(arr.length - 1));
+//         arr = arr.slice(rnd, rnd+3);
  //        console.log (arr);
  //        console.log(arr[0].name);
  //        console.log(arr[1].name);
  //        console.log(arr[2].name);
-         callback (arr);
+        
+         callback ([arr[rnd], arr[rnd2], arr[rnd3]]);
       });
    };
 
