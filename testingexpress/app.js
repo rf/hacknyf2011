@@ -17,6 +17,8 @@ var express = require('express'),
             token: "jLzcmltuso2zCO51O6ID1S8UcePSiX_S",
             token_secret: "LlDzta29cjw-fh-4fH0eMNe2jbI"
      });
+     var geoip = require('geoip')
+     var city = new geoip.City('/usr/share/GeoIP/GeoLiteCity.dat');  
 
 /**
  * Server configuration.
@@ -46,6 +48,18 @@ app.configure('production', function(){
  */
 app.get('/', function(req, res){
    res.render('index', { title: "cheapchap" });
+});
+
+app.get('/city', function(req,res){
+   console.log(req.connection);
+   city.lookup(req.connection.remoteAddress, function(err, data) {
+    if (err) {throw err;}
+    if (data) {
+        console.log(data);
+         res.json(data);
+    }
+  });
+
 });
 
 
@@ -146,5 +160,5 @@ app.get("/etsy/:max_price/:num_to_return", function (req,res){
    );
 });
 
-app.listen(3011);
+app.listen(80);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
