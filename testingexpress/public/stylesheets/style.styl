@@ -1,40 +1,80 @@
 body
-  font-family "Helvetica Neue", "Lucida Grande", "Arial"
-  font-size 13px
-  text-align center
-  text-stroke 1px rgba(255, 255, 255, 0.1)
-  color #555
-h1, h2
-  margin 0
-  font-size 22px
-  color #343434
-h1
-  text-shadow 1px 2px 2px #ddd
-  font-size 60px
-#articles
-  text-align left
-  margin-left auto
-  margin-right auto
-  width 320px
-  .article
-    margin 20px
-    .created_at
-        display none
-    .title
-        font-weight bold
-        text-decoration underline
-        background-color #eee
-    .body
-        background-color #ffa
-.article
-  .created_at
-    display none
-  input[type =text]
-    width 490px
-    margin-left 16px
-  input[type =button], input[type =submit]
-    text-align left
-    margin-left 440px
-  textarea
-    width 490px
-    height 90px
+   font-family "Helvetica", "Arial", sans-sarif
+   font-size 13px
+   background-color #eaeaea
+   text-shadow 0 1px 1px #fff
+   color #999
+a
+   font-weight: bold
+   text-decoration none
+   color #999
+a:hover
+   text-decoration underline
+.container
+   width 900px
+   margin 0 auto
+.logo
+   width 408px
+   margin 15px auto 0 auto
+.headline
+   width 100%
+   text-align center
+   font-size 12px
+   margin-top 10px
+.steps
+   padding 0 0 30px 20px
+   margin 0 auto
+   text-align center
+   padding-top 20px
+   font-size 14px
+   font-weight bold
+.steps li
+   float left
+   width auto
+   display inline
+   padding 0 25px
+.outer-box
+   border 1px solid #dedede
+   height 500px
+   background-color #fbfbfb
+.inner-top-box
+   background-color #fff
+   margin 5px 5px 0 5px
+   height 400px
+   border-bottom 1px solid #ebebeb
+.steps-desc
+   font-size 12px
+   padding 30px 0 0 50px
+   font-weight bold
+   width auto
+.steps-desc-name
+   position absolute
+   color #000
+.steps-desc-text
+   position absolute
+   padding-left 80px
+   font-weight none
+.inner-bottom-box
+   padding 20px
+   background-color #f3f3f3
+   margin 0 5px 5px 5px
+   height: 50px
+.next-button
+   background: url(/images/next-button.png) no-repeat 0 0
+   float: right
+.prev-button
+   background: url(/images/prev-button.png) no-repeat 0 0
+   float left
+.next-button, .prev-button
+   width 155px
+   height 50px
+   border 0
+.next-button:hover, .prev-button:hover
+   background-position 0 -50px
+.next-button:active, .next-button:focus, .prev-button:active, .prev-button:focus
+   background-position 0 -100px
+.footer
+   width 800px
+   text-align right
+   font-size 12px
+   margin 10px auto
