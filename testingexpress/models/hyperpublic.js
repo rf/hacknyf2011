@@ -40,6 +40,7 @@ exports.hyperpublic = function (db) {
       for (k = 1; k <= 10; k++) {
          priv.rest ('places', {location : loc, 'category' : category, 'page' : k, 'page_size' : 50},
             function(res) {
+               console.log ('actually got a response');
                leni = res.length;
                for (i = 0; i < leni; i++) {
                   test2 = 0;
@@ -49,7 +50,7 @@ exports.hyperpublic = function (db) {
     //                 console.log (res[i].properties[j]);
                      if (res[i].properties[j].key === "price") {
     //                    locations_with_value.push(res[i]);
-                        test++; test2=1;
+                        test++; //test2=1;
                      }
                   }
                   lenj = res[i].images.length;
@@ -58,6 +59,7 @@ exports.hyperpublic = function (db) {
                          (res[i].images[j].src_large.indexOf("knifefork") === -1)) {
                         test++;
                         res[i].image = res[i].images[j].src_large;
+                        test2 = 1;
                      }
                   }
                   if (test === 2) {
@@ -89,10 +91,10 @@ exports.hyperpublic = function (db) {
                locations.forEach(function (doc) {
                   priv.db.save(doc, function () {
                      loc_done++;
-                     console.log ("done locations: " + loc_done);
+                    // console.log ("done locations: " + loc_done);
                      if (loc_done === (loc_len)) {
                         done_loops++;
-                        console.log ("done loops: " + done_loops);
+                      //  console.log ("done loops: " + done_loops);
                         if (done_loops === 1) callback();
                      }
                   });
@@ -104,12 +106,18 @@ exports.hyperpublic = function (db) {
    };
 
    priv.runCachedQuery = function (theloc, thevalue, thecategory, callback) {
-      console.log ("price: " + thevalue);
-      priv.db.find({location: theloc, category:thecategory, price:Number(thevalue)}).toArray (function (err, arr) {
+      var search = {};
+      search.location = theloc;
+      search.category = thecategory
+      if (thevalue === "any") {
+      } else {
+         search.price = Number(thevalue);
+      }
+      priv.db.find(search).toArray (function (err, arr) {
          if (err) throw err;
          var rnd = Math.floor(Math.random()*(arr.length - 3));
          arr = arr.slice(rnd, rnd+3);
-         console.log (arr);
+ //        console.log (arr);
  //        console.log(arr[0].name);
  //        console.log(arr[1].name);
  //        console.log(arr[2].name);
