@@ -5,10 +5,10 @@
 var express = require('express'),
     app = module.exports = express.createServer(),
     posts = require('./models/posts').posts('localhost', 27017),
-    etsy = require('./models/etsy').etsy(),
     mongo = require('mongolian'),
     mongo_server = new mongo(),
     db = mongo_server.db('cheapchap'),
+    etsy = require('./models/etsy').etsy(db.collection('etsy')),
     hp = require('./models/hyperpublic').hyperpublic(db.collection('locations'));
 
 /**
@@ -54,9 +54,9 @@ app.get("/hp/:loc/:cat/:price", function (req, res) {
    );
 });
 
-app.get("/etsy/:max_price", function (req,res){
+app.get("/etsy/:max_price/:num_to_return", function (req,res){
    etsy.findGifts(
-      req.params.max_price,
+      req.params.max_price, req.params.num_to_return,
       function(error,data) {
          if (error){   
             throw error;
@@ -67,5 +67,5 @@ app.get("/etsy/:max_price", function (req,res){
    );
 });
 
-app.listen(3012);
+app.listen(3011);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

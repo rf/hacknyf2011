@@ -1,9 +1,10 @@
 var mdb = require('mongodb');
 var request = require('request');
 
-exports.etsy = function () {
+exports.etsy = function (collection) {
         "use strict";
         var pub = {}, priv = {};
+        priv.collection = collection;
         var api_key = "qe2a1git55h74s5etlpxlot9";
         var bitly_key = "R_e74f387cfc695e9ad57183993fc7005a";
       
@@ -23,8 +24,18 @@ exports.etsy = function () {
       };
 
 
-        pub.findGifts= function (price,callback) {
-                        
+        pub.findGifts= function (my_price,num_to_return,callback) {
+               num_to_return = Number(num_to_return); 
+               priv.collection.find( { price : { $lte: my_price} } ).toArray( function (err, arr){
+                  if( !err){
+                     var len = arr.length;
+                    var randomnumber=Math.floor(Math.random()* (len - (num_to_return -1)) );
+                     var slice = arr.slice(randomnumber, (randomnumber + num_to_return));
+                     callback(0,slice);
+                  }
+
+               });
+                        /*
                var  url = "http://openapi.etsy.com";
                var terms= encodeURIComponent("jewelry,flowers");
                var path = "/v2/public/listings/active.json?keywords=" +terms+ "&limit=100&includes=Images:1&api_key="+api_key;
@@ -72,7 +83,8 @@ exports.etsy = function () {
                      callback(1,0);
                   }
                 })
+      */
 
-        };
+        }; 
         return pub;
 };
