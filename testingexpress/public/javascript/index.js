@@ -122,7 +122,7 @@ function render_hp_hotel()
 function request_hp_hotel()
 {
 	$.ajax({
-		url: '/hp/New+York/hotel/2',
+		url: '/hp/New+York/hotel/any',
 		async: 'true',
 		dataType: 'json',
 		timeout: 1000, 
