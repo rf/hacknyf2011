@@ -37,6 +37,7 @@ exports.hyperpublic = function (db) {
    priv.cacheLocations = function (loc, value, category, callback) {
       var i, j, key, leni, lenj, locations_with_value = [], locations = [], test,
           k, done_loops = 0, test2;
+               var called_callback=false;
       for (k = 1; k <= 10; k++) {
          priv.rest ('places', {location : loc, 'category' : category, 'page' : k, 'page_size' : 50},
             function(res) {
@@ -65,7 +66,7 @@ exports.hyperpublic = function (db) {
                   if (test === 2) {
                      locations_with_value.push (res[i]);
                   }
-                  if ((test2 === 1) && ((category === 'hotels') || (category === 'entertainment'))) {
+                  if ((test2 === 1) && ((category === 'hotels') || (category === 'entertainment') || (category === 'motel'))) {
                      locations_with_value.push (res[i]);
                   }
                }
@@ -88,16 +89,20 @@ exports.hyperpublic = function (db) {
                   });
                });
                var loc_len = locations.length;
+               done_loops+=loc_len;
                if (loc_len === 0) done_loops++;
                var loc_done = 0;
                locations.forEach(function (doc) {
-                     loc_done++;
-                     if (loc_done === (loc_len-1)) {
-                        done_loops++;
-                     }
-                     priv.db.save(doc);
+                  done_loops++;
+                  //loc_done++;
+                  if (loc_done === (loc_len-1)) {
+                  }
+                  priv.db.save(doc);
                });
-               if (done_loops === 2) callback();
+               if (done_loops >= 3 && !called_callback) {
+                  called_callback = true;
+                  callback();
+               }
                //console.log (JSON.stringify (locations, null, 3));
             }
          );
@@ -110,7 +115,7 @@ exports.hyperpublic = function (db) {
       search.category = thecategory
       if (thevalue === "any") {
       } else {
-         search.price = Number(thevalue);
+         search.price = {$lt: Number(thevalue)};
       }
       priv.db.find(search).toArray (function (err, arr) {
          if (err) throw err;
