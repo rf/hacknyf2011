@@ -4,6 +4,7 @@ body {
   background-color: #eaeaea;
   text-shadow: 0 1px 1px #fff;
   color: #999;
+  min-width: 1000px;
 }
 a {
   font-weight: bold;
@@ -17,21 +18,30 @@ a:hover {
   width: 900px;
   margin: 0 auto;
 }
+.header {
+  padding-top: 10px;
+  height: 30px;
+  width: 100%;
+  background-color: #373535;
+}
+.header table {
+  margin: 0 auto;
+  width: 800px;
+}
 .logo {
+  text-align: left;
   width: 408px;
-  margin: 15px auto 0 auto;
 }
 .headline {
-  width: 100%;
-  text-align: center;
+  text-align: right;
+  color: #fff;
   font-size: 12px;
-  margin-top: 10px;
+  text-shadow: 0 1px 1px #000;
 }
 .steps {
-  padding: 0 0 30px 20px;
+  padding: 27px 0 40px 20px;
   margin: 0 auto;
   text-align: center;
-  padding-top: 20px;
   font-size: 14px;
   font-weight: bold;
 }
