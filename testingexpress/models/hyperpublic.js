@@ -65,7 +65,7 @@ exports.hyperpublic = function (db) {
                   if (test === 2) {
                      locations_with_value.push (res[i]);
                   }
-                  if ((test2 === 1) && (category === 'hotels')) {
+                  if ((test2 === 1) && ((category === 'hotels') || (category === 'entertainment'))) {
                      locations_with_value.push (res[i]);
                   }
                }
@@ -87,18 +87,16 @@ exports.hyperpublic = function (db) {
                   });
                });
                var loc_len = locations.length;
+               if (loc_len === 0) done_loops++;
                var loc_done = 0;
                locations.forEach(function (doc) {
-                  priv.db.save(doc, function () {
                      loc_done++;
-                    // console.log ("done locations: " + loc_done);
-                     if (loc_done === (loc_len)) {
+                     if (loc_done === (loc_len-1)) {
                         done_loops++;
-                      //  console.log ("done loops: " + done_loops);
-                        if (done_loops === 1) callback();
                      }
-                  });
+                     priv.db.save(doc);
                });
+               if (done_loops === 2) callback();
                //console.log (JSON.stringify (locations, null, 3));
             }
          );
