@@ -54,9 +54,9 @@ app.get("/hp/:loc/:cat/:price", function (req, res) {
    );
 });
 
-app.get("/etsy/:max_price", function (req,res){
+app.get("/etsy/:max_price/:num_to_return", function (req,res){
    etsy.findGifts(
-      req.params.max_price,
+      req.params.max_price, req.params.num_to_return,
       function(error,data) {
          if (error){   
             throw error;
