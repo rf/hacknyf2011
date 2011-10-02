@@ -3,7 +3,7 @@
 
   <match pattern="">
     <message>
-      <content>Welcome to CheapChap<br/> Our tagline is awesome<br/>
+      <content>Welcome to CheapChap<br/>Love ain't cheap...but your date can be!<br/>
                <a query="scratch.russfrank.us date" /> Get Date Idea <br/>
                <a query="scratch.russfrank.us location" /> Set Location <br/>
                <a query="scratch.russfrank.us reset" /> Reset Location<br/>
