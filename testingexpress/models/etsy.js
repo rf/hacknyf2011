@@ -23,44 +23,47 @@ exports.etsy = function () {
       };
 
 
-        pub.findGifts= function (callback) {
+        pub.findGifts= function (price,callback) {
                         
                var  url = "http://openapi.etsy.com";
-               var terms="ring";
-               var path = "/v2/public/listings/active.json?keywords=" +terms+ "&limit=10&includes=Images:1&api_key="+api_key;
+               var terms= encodeURIComponent("jewelry,flowers");
+               var path = "/v2/public/listings/active.json?keywords=" +terms+ "&limit=100&includes=Images:1&api_key="+api_key;
                var response; 
                 request(url+path, function (error, response, body) {
                   if (!error && response.statusCode == 200) {
                      response = body;
                      var items = JSON.parse(body);
-                     var num_responses = 0;
                      var toReturn = new Array();
 
-                     var length = items['results'].length;
    
                      for( var key in items['results']){
-                        if (items['results'][key]['title'] == "USD"){
-                           continue;
-                        }
-                        priv.bitly_url(items['results'][key], function (item_old,response){
-      
+                        if (items['results'][key]['currency_code'] == "USD"){
                                 var item = {};
+                                var item_old = items['results'][key];
                                 item['name'] = item_old['title'];
+                  
                                 item['description'] = item_old['description'];
                                 item['price'] = item_old['price'];
                                 item['image'] = item_old['Images'][0]['url_570xN'];
-                                console.log("we are here");
-                                 item['url'] = response['data']['url'];
+                                item['url'] = item_old['url'];
                                 //console.log(items['results'][key]);
-                                toReturn.push(item);
-                                num_responses++;
-                                if(num_responses == length){
-                                     console.log(toReturn);
-                                    callback(0,toReturn);
-                              }
-                        })
-                        
+                                if (item['price'] <= price){
+                                   toReturn.push(item);
+                                }
+                     }else{
+                        console.log(items['results'][key]['currency_code']);
                      }
+                           
+                     
+                     }
+
+                    var real_size = toReturn.length;
+                    var randomnumber=Math.floor(Math.random()*real_size) 
+                    priv.bitly_url(toReturn[randomnumber],function( item, response){
+                     toReturn[randomnumber]['url'] = response['data']['url']; 
+                     callback(0,toReturn[randomnumber]);
+                  }) 
+
 
                   }else{
                      console.log("got error:" + error + " and reponse:" + response);
@@ -68,7 +71,6 @@ exports.etsy = function () {
                   }
                 })
 
-                  console.log("made the request to " + url +  path);
         };
         return pub;
 };
