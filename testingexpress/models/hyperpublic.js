@@ -75,13 +75,13 @@ exports.hyperpublic = function (db) {
                      }
                   });
                   locations.push({
+                     "_id"       : place.display_name,
                      "name"      : place.display_name,
                      "category"  : category,
                      "location"  : loc,
                      "price"     : pr,
                      "image"     : place.image,
-                     "address"   : place.locations[0].name,
-                     "_id"       : place.display_name
+                     "address"   : place.locations[0].name
                   });
                });
                var loc_len = locations.length;
@@ -109,10 +109,10 @@ exports.hyperpublic = function (db) {
          if (err) throw err;
          var rnd = Math.floor(Math.random()*(arr.length - 3));
          arr = arr.slice(rnd, rnd+3);
-         console.log (arr);
- //        console.log(arr[0].name);
-  //       console.log(arr[1].name);
-  //       console.log(arr[2].name);
+  //       console.log (arr);
+         console.log(arr[0].name);
+         console.log(arr[1].name);
+         console.log(arr[2].name);
          callback (arr);
       });
    };
