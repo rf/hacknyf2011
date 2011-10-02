@@ -1,8 +1,22 @@
-h1= title
-#articles
-   - each article in articles
-      div.article
-         div.created_at= article.created_at
-         div.title 
-            a(href="/blog/"+article._id)!= article.title
-         div.body= article.body
+div.container
+   div.logo
+      img(src='/images/logo.png')
+   div.headline
+      p Created because New York City is too damned expensive to live in.
+   div.steps
+      ul
+         li 1. The Basics
+         li 2. A Place to Frolic
+         li 3. A Venue to Dine
+         li 4. Close the Deal
+         li 5. Print Your Itinerary
+   div.outer-box
+      div.inner-top-box
+         div.steps-desc
+            div.steps-desc-name
+               p Step One
+            div.steps-desc-text
+               p Start the date off on the right note with perfect present from etsy.
+      div.inner-bottom-box
+         button.prev-button
+         button.next-button
