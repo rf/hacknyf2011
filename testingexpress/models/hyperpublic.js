@@ -2,9 +2,42 @@ var request = require('request');
 var mongo = require('mongolian');
 var _ = require('underscore');
 
+var yelp = require("yelp").createClient({
+            consumer_key: "swwatQcoJz1db2Ec2hFXZQ",
+            consumer_secret: "-XTXcYvgPh8anInpAYrSImmOTHs",
+            token: "jLzcmltuso2zCO51O6ID1S8UcePSiX_S",
+            token_secret: "LlDzta29cjw-fh-4fH0eMNe2jbI"
+    });
+
+
 exports.hyperpublic = function (db) {
    "use strict";
    var pub = {}, priv = {};
+
+var doyelp = function (req, res){
+      for( var i =0; i < 10; i++){
+              yelp.search({term: req.cat, location: req.loc, offset: i*20}, function(error, data) {
+                 for(var key in data['businesses']){
+                    var item = data['businesses'][key];
+                    var toInsert = {};
+                    toInsert['category'] = req.cat;
+                    toInsert['location'] = req.loc;
+                    toInsert['_id'] = item['name'] + req.loc;
+                    toInsert['phone'] = item['phone'];
+                    toInsert['price'] = 1;
+                    toInsert['image'] = item['image_url'];
+                    toInsert['name'] = item['name'];
+                    toInsert['address'] = item['location']['display_address'][0] + ", " +  item['location']['display_address'][1];
+                    priv.db.save(toInsert);
+                     console.log (toInsert);
+                 }
+         });
+      }
+ //  if (res)
+   //      res.send("Ok");
+};
+
+
 
    priv.rest = function (type, params, callback) {
       params.client_id = "8UufhI6bCKQXKMBn7AUWO67Yq6C8RkfD0BGouTke";
@@ -142,6 +175,7 @@ exports.hyperpublic = function (db) {
             // run the query out of cache
             priv.runCachedQuery (loc, value, category, callback);
          } else {
+            doyelp ({loc: loc, cat: category}, {});
             console.log ('no cache!');
             priv.cacheLocations (loc, value, category, function () {
                priv.db.save ({'loc' : loc, 'category' : category});
