@@ -31,7 +31,7 @@ function render_etsy_prod()
 	html = html+'</tr><tr>';
 	
 	for (var i = 0; i <= 2; i++)
-		html = html+'<td class="choice-desc">'+etsy_prod[i].name.substring(0, 100)+' ($'+etsy_prod[i].price+')</td>';
+		html = html+'<td class="choice-desc"><a href="'+etsy_prod[i].url+'">'+etsy_prod[i].name.substring(0, 100)+'</a> ($'+etsy_prod[i].price+')</td>';
 		
 	html = html+'</tr></table>';
 	$('#step1-choices').fadeTo('normal', 0, function(){
@@ -78,7 +78,7 @@ function render_hp_food()
 	html = html+'</tr><tr>';
 
 	for (var i = 0; i <= 2; i++)
-		html = html+'<td class="choice-desc"><b>'+hp_food[i].name.substring(0, 100)+'</b> ('+interpret_price(hp_food[i].price)+')<br />'+hp_food[i].address+'</td>';
+		html = html+'<td class="choice-desc"><b><a href="'+hp_food[i].url+'">'+hp_food[i].name.substring(0, 100)+'</a></b> ('+interpret_price(hp_food[i].price)+')<br />'+hp_food[i].address+'</td>';
 
 	html = html+'</tr></table>';
 	$('#step3-choices').fadeTo('normal', 0, function(){
@@ -127,7 +127,7 @@ function render_hp_places()
 	html = html+'</tr><tr>';
 
 	for (var i = 0; i <= 2; i++)
-		html = html+'<td class="choice-desc"><b>'+hp_places[i].name.substring(0, 100)+'</b> ('+interpret_price(hp_places[i].price)+')<br />'+hp_places[i].address+'</td>';
+		html = html+'<td class="choice-desc"><b><a href="'+hp_places[i].url+'">'+hp_places[i].name.substring(0, 100)+'</a></b> ('+interpret_price(hp_places[i].price)+')<br />'+hp_places[i].address+'</td>';
 
 	html = html+'</tr></table>';
 	$('#step2-choices').fadeTo('normal', 0, function(){
@@ -173,7 +173,7 @@ function render_hp_hotel()
 	html = html+'</tr><tr>';
 
 	for (var i = 0; i <= 2; i++)
-		html = html+'<td class="choice-desc"><b>'+hp_hotel[i].name.substring(0, 100)+'</b> ('+interpret_price(hp_hotel[i].price)+')<br />'+hp_hotel[i].address+'</td>';
+		html = html+'<td class="choice-desc"><b><a href="'+hp_hotel[i].url+'">'+hp_hotel[i].name.substring(0, 100)+'</a></b> ('+interpret_price(hp_hotel[i].price)+')<br />'+hp_hotel[i].address+'</td>';
 
 	html = html+'</tr></table>';
 	$('#step4-choices').fadeTo('normal', 0, function(){
@@ -215,10 +215,10 @@ function generate_results()
 	html = '<table border="0"><tr><td width="50%">';
 
 	html += '<table id="results_table" border="0">';
-	html += '<tr><td class="color"><b>Basic</b> '+etsy_prod[etsy_prod_sel].name+' ($'+etsy_prod[etsy_prod_sel].price+')</td></tr>';
-	html += '<tr><td class="color_alt"><b>Frolicking</b> '+hp_places[hp_places_sel].name+'<br />'+hp_places[hp_places_sel].address+'</td></tr>';
-	html += '<tr><td class="color"><b>Dining</b> '+hp_food[hp_food_sel].name+'<br />'+hp_food[hp_food_sel].address+'</td></tr>';
-	html += '<tr><td class="color_alt"><b>Evening</b> '+hp_hotel[hp_hotel_sel].name+'<br />'+hp_hotel[hp_hotel_sel].address+'</td></tr>';
+	html += '<tr><td class="color"><b>Basic</b> <a href="'+etsy_prod[etsy_prod_sel]+'">'+etsy_prod[etsy_prod_sel].name+'</a> ($'+etsy_prod[etsy_prod_sel].price+')</td></tr>';
+	html += '<tr><td class="color_alt"><b>Frolicking</b> <a href="'+hp_places[hp_places_sel].url+'">'+hp_places[hp_places_sel].name+'</a><br />'+hp_places[hp_places_sel].address+'</td></tr>';
+	html += '<tr><td class="color"><b>Dining</b> <a href="'+hp_food[hp_food_sel]+'">'+hp_food[hp_food_sel].name+'</a><br />'+hp_food[hp_food_sel].address+'</td></tr>';
+	html += '<tr><td class="color_alt"><b>Evening</b> <a href="'+hp_hotel[hp_hotel_sel]+'">'+hp_hotel[hp_hotel_sel].name+'</a><br />'+hp_hotel[hp_hotel_sel].address+'</td></tr>';
 	html += '</table>';
 	
 	html += '</td><td id="map_canvas" width="50%">';
