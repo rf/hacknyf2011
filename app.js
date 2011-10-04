@@ -4,7 +4,6 @@
 
 var express = require('express'),
     app = module.exports = express.createServer(),
-    posts = require('./models/posts').posts('localhost', 27017),
     mongo = require('mongolian'),
     mongo_server = new mongo(),
     db = mongo_server.db('cheapchap'),
@@ -51,11 +50,11 @@ app.get('/', function(req, res){
 });
 
 app.get('/city', function(req,res){
-   //console.log(req.connection);
+   console.log(req.connection);
    city.lookup(req.connection.remoteAddress, function(err, data) {
     if (err) {throw err;}
     if (data) {
-        //console.log(data);
+        console.log(data);
          res.json(data);
     }
   });
@@ -64,7 +63,7 @@ app.get('/city', function(req,res){
 
 
 app.get("/hp/:loc/:cat/:price", function (req, res) {
-  // console.log(req.params);
+   console.log(req.params);
    hp.findLocations (
       req.params.loc, 
       req.params.price, 
@@ -74,6 +73,7 @@ app.get("/hp/:loc/:cat/:price", function (req, res) {
       }
    );
 });
+
 
 app.get("/yelp/:location/:catagory/:num_to_return", function (req, res){
       for( var i =0; i < 10; i++){
@@ -154,17 +154,13 @@ app.post("/date_engine",  function (request, response) {
 });
 
 app.get("/etsy/:max_price/:num_to_return", function (req,res){
-   etsy.findGifts(
+   etsy.find(
       req.params.max_price, req.params.num_to_return,
-      function(error,data) {
-         if (error){   
-            throw error;
-         } else {
-            res.json(data);
-         }
+      function (data) {
+         res.json(data);
       }
    );
 });
 
-app.listen(3000);
+app.listen(3200);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

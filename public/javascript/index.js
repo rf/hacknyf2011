@@ -21,12 +21,20 @@ function interpret_price(number)
 		return string;
 }
 
+function get_image(url)
+{
+   if (url == null)
+      return 'images/no-image.png';
+   else
+      return url
+}
+
 function render_etsy_prod()
 {
 	var html = '<table border="0"><tr>';
 	
 	for (var i = 0; i <= 2; i++)
-		html = html+'<td id="step1-holder'+i+'" class="step1-holder"><img id="'+i+'" class="step1-images" src="' + etsy_prod[i].image + '" width="250px" height="250px" /></td>';
+		html = html+'<td id="step1-holder'+i+'" class="step1-holder"><img id="'+i+'" class="step1-images" src="' + get_image(etsy_prod[i].image) + '" width="250px" height="250px" /></td>';
 	
 	html = html+'</tr><tr>';
 	
@@ -73,7 +81,7 @@ function render_hp_food()
 	var html = '<table border="0"><tr>';
 	
 	for (var i = 0; i <= 2; i++)
-		html = html+'<td id="step3-holder'+i+'" class="step3-holder"><img id="'+i+'" class="step3-images" src="' + hp_food[i].image + '" width="250px" height="250px" /></td>';
+		html = html+'<td id="step3-holder'+i+'" class="step3-holder"><img id="'+i+'" class="step3-images" src="' + get_image(hp_food[i].image) + '" width="250px" height="250px" /></td>';
 		
 	html = html+'</tr><tr>';
 
@@ -105,7 +113,7 @@ function render_hp_food()
 function request_hp_food()
 {
 	$.ajax({
-		url: '/hp/'+zip_code+'/food/any',
+		url: '/hp/'+encodeURIComponent(zip_code)+'/food/any',
 		async: 'true',
 		dataType: 'json',
 		timeout: 10000, 
@@ -122,7 +130,7 @@ function render_hp_places()
 	var html = '<table border="0"><tr>';
 	
 	for (var i = 0; i <= 2; i++)
-		html = html+'<td id="step2-holder'+i+'" class="step2-holder"><img id="'+i+'" class="step2-images" src="' + hp_places[i].image + '" width="250px" height="250px" /></td>';
+		html = html+'<td id="step2-holder'+i+'" class="step2-holder"><img id="'+i+'" class="step2-images" src="' + get_image(hp_places[i].image) + '" width="250px" height="250px" /></td>';
 		
 	html = html+'</tr><tr>';
 
@@ -152,7 +160,7 @@ function render_hp_places()
 function request_hp_places()
 {
 	$.ajax({
-		url: '/hp/'+zip_code+'/entertainment/any',
+		url: '/hp/'+encodeURIComponent(zip_code)+'/entertainment/any',
 		async: 'true',
 		dataType: 'json',
 		timeout: 10000, 
@@ -169,7 +177,7 @@ function render_hp_hotel()
 	var html = '<table border="0"><tr>';
 	
 	for (var i = 0; i <= 2; i++)
-		html = html+'<td id="step4-holder'+i+'" class="step4-holder"><img id="'+i+'" class="step4-images" src="' + hp_hotel[i].image + '" width="250px" height="250px" /></td>';
+		html = html+'<td id="step4-holder'+i+'" class="step4-holder"><img id="'+i+'" class="step4-images" src="' + get_image(hp_hotel[i].image) + '" width="250px" height="250px" /></td>';
 	html = html+'</tr><tr>';
 
 	for (var i = 0; i <= 2; i++)
@@ -198,7 +206,7 @@ function render_hp_hotel()
 function request_hp_hotel()
 {
 	$.ajax({
-		url: '/hp/'+zip_code+'/hotels/any',
+		url: '/hp/'+encodeURIComponent(zip_code)+'/hotels/any',
 		async: 'true',
 		dataType: 'json',
 		timeout: 10000, 
@@ -222,8 +230,8 @@ function generate_results()
 	html += '</table>';
 	
 	html += '</td><td id="map_canvas" width="50%">';
-	html += '<img src="/images/staticmap.png" style="margin-left: 20px;" />';
-//	html += '<img src="http://maps.google.com/maps/api/staticmap?size=256x256&maptype=roadmap&sensor=false&markers='+encodeURIComponent(hp_places[hp_places_sel].address)+'&makers='+encodeURIComponent(hp_food[hp_food_sel].address)+'&markers='+encodeURIComponent(hp_hotel[hp_hotel_sel].address)+'" alt="Static, Marked Map of Chicago, Illinois"></img>';
+//	html += '<img src="/images/staticmap.png" style="margin-left: 20px;" />';
+	html += '<img src="http://maps.google.com/maps/api/staticmap?size=256x256&maptype=roadmap&sensor=false&markers='+encodeURIComponent(hp_places[hp_places_sel].address)+'&makers='+encodeURIComponent(hp_food[hp_food_sel].address)+'&markers='+encodeURIComponent(hp_hotel[hp_hotel_sel].address)+'" alt="map" style="margin-left: 20px;"></img>';
 	html += '</td></tr></table>';
 	
 	$('#results').html(html);
@@ -313,7 +321,17 @@ $(document).ready(function() {
 		timeout: 1000, 
 		success: function ( data )
 		{ 
-			zip_code = data.postal_code;
+         if (data.postal_code == undefined || data.postal_code == null)
+            zip_code = "new+york";
+         else
+            zip_code = data.postal_code;
+//         zip_code = "piscataway"
+//         zip_code = "new+york";
+//         zip_code = "new+york,+ny";       
+//         zip_code = encodeURIComponent("piscataway");
+//         zip_code = encodeURIComponent("Piscataway,NJ");
+//         zip_code = '08854';
+//         zip_code = encodeURIComponent(data.city+" "+data.region);
 			request_hp_food();
 			request_hp_places();
 			request_etsy_prod();	

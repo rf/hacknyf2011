@@ -3,19 +3,22 @@ var mongo = require('mongolian');
 var _ = require('underscore');
 
 var yelp = require("yelp").createClient({
-//            consumer_key: "swwatQcoJz1db2Ec2hFXZQ",
-            ///consumer_key: "U5XZjjllVhC4gt1rtEabrw",
-            consumer_key: "fIAc81be_pt__L3TK47mNw",
+            //consumer_key: "U5XZjjllVhC4gt1rtEabrw",
+//            consumer_key: "fIAc81be_pt__L3TK47mNw",
 //            consumer_secret: "-XTXcYvgPh8anInpAYrSImmOTHs",
             //consumer_secret: "0cw0RHLsBi4nKfNfGsWS6vC9AfA",
-            consumer_secret: "kU4yrKwddUBHnNa0Q_1BcMB1w04",
+//            consumer_secret: "kU4yrKwddUBHnNa0Q_1BcMB1w04",
 //            token: "jLzcmltuso2zCO51O6ID1S8UcePSiX_S",
            //token: "AiysCogTNSwz1QK5aVdS1i15GB7toLmc",
-          token: "Y83jY74FM3JIA5xsol7HEn5vurZsGGqi",
+//          token: "Y83jY74FM3JIA5xsol7HEn5vurZsGGqi",
 //            token_secret: "LlDzta29cjw-fh-4fH0eMNe2jbI"
             //token_secret: "TI_ApsukBkhlV9AulFuYdlh9RaI"
-            token_secret: "wYWG8RHd03YZa1MvXsc0juSVxxk"
-    });
+//            token_secret: "wYWG8RHd03YZa1MvXsc0juSVxxk"
+   consumer_key: "swwatQcoJz1db2Ec2hFXZQ",
+   consumer_secret: "-XTXcYvgPh8anInpAYrSImmOTHs",
+   token: "NNSNRCfKsdfHq4CtwSMG_MAVAEVFYLFm",
+   token_secret: "wZT3ifshSRJHgCtcxs0J7dMYwH8"    
+});
 
 
 exports.hyperpublic = function (db) {
@@ -31,8 +34,8 @@ var doyelp = function (req, res){
                  for(var key in data['businesses']){
                     var item = data['businesses'][key];
 
-                  if (!item.hasOwnProperty('image_url')) continue;
-            
+                  //if (!item.hasOwnProperty('image_url')) continue;
+                  //console.log(item);        
                     var toInsert = {};
                     toInsert['category'] = req.cat;
                     toInsert['location'] = req.loc;
@@ -68,13 +71,13 @@ var doyelp = function (req, res){
       httpget (options, function (res) {
          callback(res);
       });*/
-      console.log (get);
+      //console.log (get);
       request('https://api.hyperpublic.com/api/v1/' + type + '?' + get, function (error, body, response) {
          if (error) throw error;
          try {
             response = JSON.parse(response);
          } catch (e) {
-            console.log (response);
+            //console.log (response);
             return;
          }
          callback (response);
@@ -88,7 +91,7 @@ var doyelp = function (req, res){
       for (k = 1; k <= 10; k++) {
          priv.rest ('places', {location : loc, 'category' : category, 'page' : k, 'page_size' : 50},
             function(res) {
-               console.log ('actually got a response');
+               //console.log ('actually got a response');
                leni = res.length;
                for (i = 0; i < leni; i++) {
                   test2 = 0;
@@ -110,12 +113,13 @@ var doyelp = function (req, res){
                         test2 = 1;
                      }
                   }
-                  if (test === 2) {
+                  /*if (test === 2) {
                      locations_with_value.push (res[i]);
                   }
                   if ((test2 === 1) && ((category === 'hotels') || (category === 'entertainment') || (category === 'motel'))) {
                      locations_with_value.push (res[i]);
-                  }
+                  }*/
+                  locations_with_value.push(res[i]);
                }
                var loc_len = 0;
                locations_with_value.forEach(function (place) {
@@ -139,8 +143,8 @@ var doyelp = function (req, res){
                   loc_len++;
                });
                done_loops+=loc_len;
-               console.log('loc_len is ' + loc_len);
-               console.log('done loops is: ' + done_loops);
+               //console.log('loc_len is ' + loc_len);
+               //console.log('done loops is: ' + done_loops);
                locations.forEach(function (doc) {
                   priv.db.save(doc);
                });
@@ -190,10 +194,10 @@ var doyelp = function (req, res){
             priv.runCachedQuery (loc, value, category, callback);
          } else {
             doyelp ({loc: loc, cat: category}, {});
-            console.log ('no cache!');
+            //console.log ('no cache!');
+            priv.db.save ({'loc' : loc, 'category' : category});
             priv.cacheLocations (loc, value, category, function () {
-               priv.db.save ({'loc' : loc, 'category' : category});
-               console.log ('ran cachelocations');
+               //console.log ('ran cachelocations');
                priv.runCachedQuery (loc, value, category, callback);
             });
          }
